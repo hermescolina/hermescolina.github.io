@@ -97,3 +97,26 @@ button:hover {
     color: red;
     font-size: 14px;
 }
+
+/* Emphasize Login Button */
+#login-button {
+    background-color: #FF5722;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#login-button:hover {
+    background-color: #FF3D00;
+}
+
+/* Smaller Password Recovery Button */
+#reset-container button {
+    font-size: 12px;
+    padding: 8px;
+    width: auto;
+}
+
+/* Conditional Visibility */
+#dashboard {
+    display: none;
+}

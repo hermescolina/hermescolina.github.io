@@ -1,5 +1,5 @@
 const poolData = {
-    UserPoolId: "us-east-1_E54lek6Y7",
+    UserPoolId: "us-east-1_E54lek6Y7", 
     ClientId: "76ktoitqul8pbcgn6c69kgvn94"
 };
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
@@ -89,8 +89,18 @@ function showDashboard() {
     document.getElementById("auth-container").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
     document.getElementById("user-info").innerText = "Logged in as: " + localStorage.getItem("userEmail");
+
+    // Change login button to logout
+    const loginButton = document.getElementById("login-button");
+    loginButton.innerText = "Logout";
+    loginButton.setAttribute("onclick", "signOut()");
 }
 
-if (localStorage.getItem("userEmail")) {
-    showDashboard();
-}
+// Check if the user is already logged in when the page loads
+window.onload = function() {
+    if (localStorage.getItem("userEmail")) {
+        showDashboard();
+    } else {
+        document.getElementById("auth-container").style.display = "block";
+    }
+};
