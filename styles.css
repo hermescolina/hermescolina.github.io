@@ -1,0 +1,99 @@
+/* styles.css */
+
+/* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    padding: 50px;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container for Forms and Dashboard */
+.container {
+    display: none;
+    max-width: 400px;
+    width: 100%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-top: 20px;
+}
+
+/* Heading Styles */
+h1 {
+    color: #333;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #007BFF;
+}
+
+/* Input and Button Styles */
+input,
+button {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+input:focus,
+button:focus {
+    outline: none;
+    border-color: #007BFF;
+}
+
+button {
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    border: none;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Auth Container */
+.auth-container {
+    width: 100%;
+}
+
+/* Dashboard Styling */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.dashboard-container button {
+    width: auto;
+}
+
+/* Link Text Style */
+.link-text {
+    color: #007BFF;
+    cursor: pointer;
+}
+
+.link-text:hover {
+    text-decoration: underline;
+}
+
+/* Error Styling */
+.error {
+    color: red;
+    font-size: 14px;
+}
