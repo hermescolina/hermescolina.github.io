@@ -21,9 +21,11 @@ body {
     padding: 10px;
     z-index: 1000;
     display: flex;
+    flex-direction: column; /* Stack buttons vertically */
     gap: 10px; /* Adds space between buttons */
 }
 
+/* Toolstrip Buttons */
 .toolstrip button {
     background-color: #28a745; /* Green background */
     color: white;
