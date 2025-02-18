@@ -4,22 +4,25 @@ const poolData = {
 };
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
-// Show Signup Form
 function showSignUp() {
-    hideAll();
     document.getElementById("signup-container").style.display = "block";
+    document.getElementById("login-container").style.display = "none";
+    document.getElementById("reset-container").style.display = "none";
+    document.getElementById("confirm-container").style.display = "none";
 }
 
-// Show Login Form
 function showLogin() {
-    hideAll();
+    document.getElementById("signup-container").style.display = "none";
     document.getElementById("login-container").style.display = "block";
+    document.getElementById("reset-container").style.display = "none";
+    document.getElementById("confirm-container").style.display = "none";
 }
 
-// Show Reset Password Form
 function showResetPassword() {
-    hideAll();
+    document.getElementById("signup-container").style.display = "none";
+    document.getElementById("login-container").style.display = "none";
     document.getElementById("reset-container").style.display = "block";
+    document.getElementById("confirm-container").style.display = "none";
 }
 
 // Hide All Forms
