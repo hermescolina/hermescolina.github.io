@@ -15,28 +15,29 @@ body {
 .toolstrip {
     position: fixed;
     top: 0;
-    left: 0;
-    width: 100%;
+    right: 0; /* Align to the rightmost */
     background-color: #333;
     color: white;
     padding: 10px;
-    text-align: center;
     z-index: 1000;
+    display: flex;
+    gap: 10px; /* Adds space between buttons */
 }
 
 .toolstrip button {
-    background-color: #007BFF;
+    background-color: #28a745; /* Green background */
     color: white;
     padding: 10px 20px;
-    border: none;
+    border: 2px solid #006400; /* Darker green border */
     border-radius: 4px;
-    margin: 0 10px;
     cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.3s, border 0.3s;
 }
 
 .toolstrip button:hover {
-    background-color: #0056b3;
+    background-color: #218838; /* Darker green when hovered */
+    border: 2px solid #004d00; /* Darker border on hover */
 }
 
 /* Container for Forms and Dashboard */
