@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login with AWS Cognito</title>
+    <title>AWS Cognito Login</title>
     
-    <!-- Load AWS SDK and Cognito Identity SDK -->
+    <!-- Load AWS SDK -->
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1196.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@6.3.1/dist/amazon-cognito-identity.min.js"></script>
     
@@ -17,7 +17,7 @@
     </style>
 </head>
 <body>
-    <h1>Sign Up / Login with AWS Cognito</h1>
+    <h1>AWS Cognito Auth</h1>
     
     <h2>Sign Up</h2>
     <input type="email" id="signup-email" placeholder="Enter Email">
@@ -34,26 +34,19 @@
     <button onclick="signIn()">Login</button>
     <button onclick="signOut()">Logout</button>
 
-    <h2>Forgot Password</h2>
-    <input type="email" id="forgot-email" placeholder="Enter Email">
-    <button onclick="forgotPassword()">Request Reset</button>
-
     <h2>Reset Password</h2>
-    <input type="text" id="reset-code" placeholder="Enter Verification Code">
+    <input type="email" id="reset-email" placeholder="Enter Email">
+    <button onclick="forgotPassword()">Send Reset Code</button>
+    
+    <input type="text" id="reset-code" placeholder="Enter Reset Code">
     <input type="password" id="new-password" placeholder="Enter New Password">
-    <button onclick="confirmNewPassword()">Reset Password</button>
+    <button onclick="confirmPasswordReset()">Reset Password</button>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            if (typeof AmazonCognitoIdentity === "undefined") {
-                console.error("AmazonCognitoIdentity SDK failed to load!");
-                return;
-            }
-            console.log("AmazonCognitoIdentity SDK loaded successfully!");
-
             const poolData = {
-                UserPoolId: "us-east-1_E54lek6Y7",  // Replace with your User Pool ID
-                ClientId: "76ktoitqul8pbcgn6c69kgvn94"  // Replace with your App Client ID
+                UserPoolId: "us-east-1_E54lek6Y7",  // ✅ Your Cognito User Pool ID
+                ClientId: "76ktoitqul8pbcgn6c69kgvn94"  // ✅ Your Cognito App Client ID
             };
             const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
@@ -65,8 +58,8 @@
                 const email = document.getElementById("signup-email").value;
                 const password = document.getElementById("signup-password").value;
                 const attributeList = [new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "email", Value: email })];
-                
-                userPool.signUp(email, password, attributeList, null, (err) => {
+
+                userPool.signUp(email, password, attributeList, null, (err, result) => {
                     if (err) return showMessage(err.message);
                     showMessage("Signup successful! Check your email for the confirmation code.");
                 });
@@ -78,7 +71,7 @@
                 const userData = { Username: email, Pool: userPool };
                 const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
-                cognitoUser.confirmRegistration(code, true, (err) => {
+                cognitoUser.confirmRegistration(code, true, (err, result) => {
                     if (err) return showMessage(err.message);
                     showMessage("Account confirmed! You can now log in.");
                 });
@@ -87,7 +80,10 @@
             window.signIn = function () {
                 const email = document.getElementById("login-email").value;
                 const password = document.getElementById("login-password").value;
-                const authDetails = new AmazonCognitoIdentity.AuthenticationDetails({ Username: email, Password: password });
+                const authDetails = new AmazonCognitoIdentity.AuthenticationDetails({
+                    Username: email,
+                    Password: password
+                });
                 const userData = { Username: email, Pool: userPool };
                 const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
@@ -96,6 +92,30 @@
                         localStorage.setItem("authToken", result.getAccessToken().getJwtToken());
                         showMessage("Login successful!");
                     },
+                    onFailure: (err) => showMessage(err.message)
+                });
+            };
+
+            window.forgotPassword = function () {
+                const email = document.getElementById("reset-email").value;
+                const userData = { Username: email, Pool: userPool };
+                const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+                cognitoUser.forgotPassword({
+                    onSuccess: () => showMessage("Reset code sent! Check your email."),
+                    onFailure: (err) => showMessage(err.message)
+                });
+            };
+
+            window.confirmPasswordReset = function () {
+                const email = document.getElementById("reset-email").value;
+                const code = document.getElementById("reset-code").value;
+                const newPassword = document.getElementById("new-password").value;
+                const userData = { Username: email, Pool: userPool };
+                const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+                cognitoUser.confirmPassword(code, newPassword, {
+                    onSuccess: () => showMessage("Password reset successful! You can now log in."),
                     onFailure: (err) => showMessage(err.message)
                 });
             };
@@ -109,29 +129,16 @@
                 }
             };
 
-            window.forgotPassword = function () {
-                const email = document.getElementById("forgot-email").value;
-                const userData = { Username: email, Pool: userPool };
-                const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-                
-                cognitoUser.forgotPassword({
-                    onSuccess: () => showMessage("A verification code has been sent to your email."),
-                    onFailure: (err) => showMessage(err.message)
+            // ✅ Check if user is already logged in
+            const currentUser = userPool.getCurrentUser();
+            if (currentUser) {
+                currentUser.getSession((err, session) => {
+                    if (!err && session.isValid()) {
+                        localStorage.setItem("authToken", session.getAccessToken().getJwtToken());
+                        showMessage("User already logged in!");
+                    }
                 });
-            };
-
-            window.confirmNewPassword = function () {
-                const email = document.getElementById("forgot-email").value;
-                const code = document.getElementById("reset-code").value;
-                const newPassword = document.getElementById("new-password").value;
-                const userData = { Username: email, Pool: userPool };
-                const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-                cognitoUser.confirmPassword(code, newPassword, {
-                    onSuccess: () => showMessage("Password reset successful! You can now log in."),
-                    onFailure: (err) => showMessage(err.message)
-                });
-            };
+            }
         });
     </script>
 </body>
