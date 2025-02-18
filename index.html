@@ -14,7 +14,7 @@
 <body>
 
     <h1>Sign Up / Login with AWS Cognito</h1>
-    
+
     <h2>Sign Up</h2>
     <input type="email" id="signup-email" placeholder="Enter Email">
     <input type="password" id="signup-password" placeholder="Enter Password">
@@ -33,33 +33,47 @@
 
     <script>
         const poolData = {
-        UserPoolId: "us-east-1_E54lek6Y7",  // ✅ Your Cognito User Pool ID
-        ClientId: "2l6mbk760ns0hgbs7lmpjclr4j"  // ✅ Your Cognito App Client ID
-    };
+            UserPoolId: "us-east-1_E54lek6Y7",  // ✅ Your Cognito User Pool ID
+            ClientId: "2l6mbk760ns0hgbs7lmpjclr4j"  // ✅ Your Cognito App Client ID
+        };
 
-        
         const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
         function signUp() {
             const email = document.getElementById("signup-email").value;
             const password = document.getElementById("signup-password").value;
+            if (!email || !password) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
             const attributeList = [new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "email", Value: email })];
 
             userPool.signUp(email, password, attributeList, null, (err, result) => {
-                if (err) return alert(err.message);
-                alert("Signup successful! Check your email for confirmation code.");
+                if (err) {
+                    alert(err.message);
+                    return;
+                }
+                alert("Signup successful! Check your email for the confirmation code.");
             });
         }
 
         function confirmSignUp() {
             const email = document.getElementById("signup-email").value;
             const code = document.getElementById("confirm-code").value;
+            if (!email || !code) {
+                alert("Please enter your email and confirmation code.");
+                return;
+            }
 
             const userData = { Username: email, Pool: userPool };
             const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
 
             cognitoUser.confirmRegistration(code, true, (err, result) => {
-                if (err) return alert(err.message);
+                if (err) {
+                    alert(err.message);
+                    return;
+                }
                 alert("Account confirmed! You can now log in.");
             });
         }
@@ -67,6 +81,10 @@
         function signIn() {
             const email = document.getElementById("login-email").value;
             const password = document.getElementById("login-password").value;
+            if (!email || !password) {
+                alert("Please enter email and password.");
+                return;
+            }
 
             const authDetails = new AmazonCognitoIdentity.AuthenticationDetails({ Username: email, Password: password });
             const userData = { Username: email, Pool: userPool };
@@ -76,7 +94,9 @@
                 onSuccess: (result) => {
                     alert("Login successful! Token: " + result.getAccessToken().getJwtToken());
                 },
-                onFailure: (err) => alert(err.message)
+                onFailure: (err) => {
+                    alert(err.message);
+                }
             });
         }
 
@@ -85,6 +105,8 @@
             if (cognitoUser) {
                 cognitoUser.signOut();
                 alert("Logged out successfully!");
+            } else {
+                alert("No user is currently logged in.");
             }
         }
     </script>
