@@ -32,13 +32,30 @@
     <script src="auth.js"></script>
 
     <script>
+        // function loadContainer(containerName) {
+        //     fetch(containerName + '.html')
+        //         .then(response => response.text())
+        //         .then(data => {
+        //             document.getElementById('auth-container').innerHTML = data;
+        //         });
+        // }
         function loadContainer(containerName) {
             fetch(containerName + '.html')
-                .then(response => response.text())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Could not load ${containerName}.html`);
+                    }
+                    return response.text();
+                })
                 .then(data => {
                     document.getElementById('auth-container').innerHTML = data;
+                })
+                .catch(error => {
+                    console.error('Error loading container:', error);
+                    document.getElementById('auth-container').innerHTML = '<p>Error loading the content.</p>';
                 });
         }
+
 
         function showSignUp() {
             loadContainer('signup-container');
