@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Cognito Auth</title>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1196.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@6.3.1/dist/amazon-cognito-identity.min.js"></script>
+    <link rel="stylesheet" href="styles2.css">
+</head>
+<body>
+    <!-- Toolstrip/Navigation Bar -->
+    <div id="toolstrip" class="toolstrip">
+        <button onclick="showSignUp()">Sign Up</button>
+        <button onclick="showLogin()">Login</button>
+        <button onclick="showResetPassword()">Reset Password</button>
+    </div>
+
+    <!-- Auth Container -->
+    <div id="auth-container">
+        <h1>AWS Cognito Auth</h1>
+
+        <!-- Signup Form -->
+        <div id="signup-container" class="container">
+            <h2>Sign Up</h2>
+            <input type="email" id="signup-email" placeholder="Enter Email">
+            <input type="password" id="signup-password" placeholder="Enter Password">
+            <button onclick="signUp()">Sign Up</button>
+        </div>
+
+        <!-- Confirmation Form -->
+        <div id="confirm-container" class="container">
+            <h2>Confirm Sign Up</h2>
+            <input type="text" id="confirm-code" placeholder="Enter Code">
+            <button onclick="confirmSignUp()">Confirm</button>
+        </div>
+
+        <!-- Login Form -->
+        <div id="login-container" class="container">
+            <h2>Login</h2>
+            <input type="email" id="login-email" placeholder="Enter Email">
+            <input type="password" id="login-password" placeholder="Enter Password">
+            <button onclick="signIn()">Login</button>
+        </div>
+
+        <!-- Password Reset Form -->
+        <div id="reset-container" class="container">
+            <h2>Reset Password</h2>
+            <input type="email" id="reset-email" placeholder="Enter Email">
+            <button onclick="forgotPassword()">Send Reset Code</button>
+            <input type="text" id="reset-code" placeholder="Enter Reset Code">
+            <input type="password" id="new-password" placeholder="Enter New Password">
+            <button onclick="confirmPasswordReset()">Reset Password</button>
+        </div>
+    </div>
+
+    <!-- Dashboard Container -->
+    <div id="dashboard" class="container">
+        <h1>Welcome to Your Dashboard</h1>
+        <p id="user-info"></p>
+        <button onclick="signOut()">Logout</button>
+    </div>
+
+    <script src="auth2.js"></script>
+</body>
+</html>
