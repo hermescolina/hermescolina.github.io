@@ -3,37 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My GitHub Pages Site</title>
+    <title>Login with AWS Cognito</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/amazon-cognito-identity-js/6.3.1/amazon-cognito-identity.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-            padding: 50px;
-        }
-        h1 {
-            color: #333;
-        }
-        button {
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 50px; }
+        input, button { display: block; margin: 10px auto; padding: 10px; width: 250px; }
+        button { background-color: #007BFF; color: white; border: none; padding: 10px; font-size: 16px; cursor: pointer; }
     </style>
 </head>
 <body>
-    <h1>Welcome to My Website 🚀</h1>
-    <p>This is a simple website hosted on GitHub Pages.</p>
+
+    <h1>Sign Up / Login with AWS Cognito</h1>
     
-    <button onclick="sayHello()">Click Me!</button>
-    
+    <h2>Sign Up</h2>
+    <input type="email" id="signup-email" placeholder="Enter Email">
+    <input type="password" id="signup-password" placeholder="Enter Password">
+    <button onclick="signUp()">Sign Up</button>
+
+    <h2>Confirm Sign Up</h2>
+    <input type="text" id="confirm-code" placeholder="Enter Code">
+    <button onclick="confirmSignUp()">Confirm</button>
+
+    <h2>Login</h2>
+    <input type="email" id="login-email" placeholder="Enter Email">
+    <input type="password" id="login-password" placeholder="Enter Password">
+    <button onclick="signIn()">Login</button>
+
+    <button onclick="signOut()">Logout</button>
+
     <script>
-        function sayHello() {
-            alert("Hello! Welcome to my GitHub Pag
+        const poolData = {
+            UserPoolId: "us-east-1_XXXXXXXXX",  // 🔹 Replace with your Cognito User Pool ID
+            ClientId: "XXXXXXXXXXXXXXXXXXXXXX" // 🔹 Replace with your Cognito App Client ID
+        };
+        
+        const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+        function signUp() {
+            const email = document.getElementById("signup-email").value;
+            const password = document.getElementById("signup-password").value;
+            const attributeList = [new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "email", Value: email })];
+
+            userPool.signUp(email, password, attributeList, null, (err, result) => {
+                if (err) return alert(err.message);
+                alert("Signup successful! Check your email for confirmation code.");
+            });
+        }
+
+        function confirmSignUp() {
+            const email = document.getElementById("signup-email").value;
+            const code = document.getElementById("confirm-code").value;
+
+            const userData = { Username: email, Pool: userPool };
+            const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+            cognitoUser.confirmRegistration(code, true, (err, result) => {
+                if (err) return alert(err.message);
+                alert("Account confirmed! You can now log in.");
+            });
+        }
+
+        function signIn() {
+            const email = document.getElementById("login-email").value;
+            const password = document.getElementById("login-password").value;
+
+            const authDetails = new AmazonCognitoIdentity.AuthenticationDetails({ Username: email, Password: password });
+            const userData = { Username: email, Pool: userPool };
+            const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+            cognitoUser.authenticateUser(authDetails, {
+                onSuccess: (result) => {
+                    alert("Login successful! Token: " + result.getAccessToken().getJwtToken());
+                },
+                onFailure: (err) => alert(err.message)
+            });
+        }
+
+        function signOut() {
+            const cognitoUser = userPool.getCurrentUser();
+            if (cognitoUser) {
+                cognitoUser.signOut();
+                alert("Logged out successfully!");
+            }
+        }
+    </script>
+
+</body>
+</html>
