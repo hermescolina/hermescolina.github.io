@@ -23,25 +23,6 @@
     <input type="password" id="signup-password" placeholder="Enter Password">
     <button onclick="signUp()">Sign Up</button>
 
-    <h2>Confirm Sign Up</h2>
-    <input type="text" id="confirm-code" placeholder="Enter Code">
-    <button onclick="confirmSignUp()">Confirm</button>
-
-    <h2>Login</h2>
-    <input type="email" id="login-email" placeholder="Enter Email">
-    <input type="password" id="login-password" placeholder="Enter Password">
-    <button onclick="signIn()">Login</button>
-
-    <h2>Reset Password</h2>
-    <input type="email" id="reset-email" placeholder="Enter Email">
-    <button onclick="forgotPassword()">Send Reset Code</button>
-    
-    <input type="text" id="reset-code" placeholder="Enter Reset Code">
-    <input type="password" id="new-password" placeholder="Enter New Password">
-    <button onclick="confirmPasswordReset()">Reset Password</button>
-
-    <button onclick="signOut()">Logout</button>
-
     <script>
         const poolData = {
             UserPoolId: "us-east-1_E54lek6Y7",  // ✅ Your Cognito User Pool ID
@@ -53,86 +34,23 @@
         function signUp() {
             const email = document.getElementById("signup-email").value;
             const password = document.getElementById("signup-password").value;
-            const attributeList = [new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "email", Value: email })];
+            
+            if (!email || !password) {
+                alert("Please enter both email and password.");
+                return;
+            }
+            
+            const attributeList = [
+                new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "email", Value: email })
+            ];
 
             userPool.signUp(email, password, attributeList, null, (err, result) => {
-                if (err) return alert(err.message);
-                alert("Signup successful! Check your email for confirmation code.");
+                if (err) {
+                    alert("Error: " + err.message);
+                    return;
+                }
+                alert("Signup successful! Check your email for the confirmation code.");
             });
-        }
-
-        function confirmSignUp() {
-            const email = document.getElementById("signup-email").value;
-            const code = document.getElementById("confirm-code").value;
-
-            const userData = { Username: email, Pool: userPool };
-            const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-            cognitoUser.confirmRegistration(code, true, (err, result) => {
-                if (err) return alert(err.message);
-                alert("Account confirmed! You can now log in.");
-            });
-        }
-
-        async function signIn() {
-            const email = document.getElementById("login-email").value;
-            const password = document.getElementById("login-password").value;
-
-            const response = await fetch("https://cognito-idp.us-east-1.amazonaws.com/", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-amz-json-1.1",
-                    "X-Amz-Target": "AWSCognitoIdentityProviderService.InitiateAuth"
-                },
-                body: JSON.stringify({
-                    AuthParameters: {
-                        USERNAME: email,
-                        PASSWORD: password
-                    },
-                    AuthFlow: "USER_PASSWORD_AUTH",
-                    ClientId: "76ktoitqul8pbcgn6c69kgvn94"
-                })
-            });
-
-            const data = await response.json();
-            if (data.AuthenticationResult) {
-                alert("Login successful! Token: " + data.AuthenticationResult.AccessToken);
-            } else {
-                alert("Login failed: " + (data.message || "Unknown error"));
-            }
-        }
-
-        function forgotPassword() {
-            const email = document.getElementById("reset-email").value;
-            const userData = { Username: email, Pool: userPool };
-            const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-            cognitoUser.forgotPassword({
-                onSuccess: () => alert("Reset code sent! Check your email."),
-                onFailure: (err) => alert(err.message)
-            });
-        }
-
-        function confirmPasswordReset() {
-            const email = document.getElementById("reset-email").value;
-            const code = document.getElementById("reset-code").value;
-            const newPassword = document.getElementById("new-password").value;
-
-            const userData = { Username: email, Pool: userPool };
-            const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-            cognitoUser.confirmPassword(code, newPassword, {
-                onSuccess: () => alert("Password reset successful! You can now log in."),
-                onFailure: (err) => alert(err.message)
-            });
-        }
-
-        function signOut() {
-            const cognitoUser = userPool.getCurrentUser();
-            if (cognitoUser) {
-                cognitoUser.signOut();
-                alert("Logged out successfully!");
-            }
         }
     </script>
 </body>
