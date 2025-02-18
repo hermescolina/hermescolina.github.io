@@ -89,11 +89,6 @@ function showDashboard() {
     document.getElementById("auth-container").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
     document.getElementById("user-info").innerText = "Logged in as: " + localStorage.getItem("userEmail");
-
-    // Change login button to logout
-    const loginButton = document.getElementById("login-button");
-    loginButton.innerText = "Logout";
-    loginButton.setAttribute("onclick", "signOut()");
 }
 
 // Check if the user is already logged in when the page loads

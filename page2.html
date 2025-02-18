@@ -9,11 +9,12 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="auth-container" class="auth-container">
+    <!-- Auth Container -->
+    <div id="auth-container">
         <h1>AWS Cognito Auth</h1>
 
         <!-- Signup Form -->
-        <div id="signup-container" class="container">
+        <div id="signup-container">
             <h2>Sign Up</h2>
             <input type="email" id="signup-email" placeholder="Enter Email">
             <input type="password" id="signup-password" placeholder="Enter Password">
@@ -21,22 +22,22 @@
         </div>
 
         <!-- Confirmation Form -->
-        <div id="confirm-container" class="container">
+        <div id="confirm-container">
             <h2>Confirm Sign Up</h2>
             <input type="text" id="confirm-code" placeholder="Enter Code">
             <button onclick="confirmSignUp()">Confirm</button>
         </div>
 
         <!-- Login Form -->
-        <div id="login-container" class="container">
+        <div id="login-container">
             <h2>Login</h2>
             <input type="email" id="login-email" placeholder="Enter Email">
             <input type="password" id="login-password" placeholder="Enter Password">
-            <button id="login-button" onclick="signIn()">Login</button>
+            <button onclick="signIn()">Login</button>
         </div>
 
         <!-- Password Reset Form -->
-        <div id="reset-container" class="container">
+        <div id="reset-container">
             <h2>Reset Password</h2>
             <input type="email" id="reset-email" placeholder="Enter Email">
             <button onclick="forgotPassword()">Send Reset Code</button>
@@ -46,8 +47,8 @@
         </div>
     </div>
 
-    <!-- Dashboard for Logged-in Users -->
-    <div id="dashboard" class="container dashboard-container">
+    <!-- Dashboard Container -->
+    <div id="dashboard" class="container">
         <h1>Welcome to Your Dashboard</h1>
         <p id="user-info"></p>
         <button onclick="signOut()">Logout</button>
