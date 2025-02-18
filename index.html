@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login with AWS Cognito</title>
+
+    <!-- Amazon Cognito SDK -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.1196.0/aws-sdk.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/amazon-cognito-identity-js/6.3.1/amazon-cognito-identity.min.js"></script>
+
     <style>
         body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 50px; }
         input, button { display: block; margin: 10px auto; padding: 10px; width: 250px; }
@@ -32,6 +36,11 @@
     <button onclick="signOut()">Logout</button>
 
     <script>
+        // Ensure the SDK is loaded
+        if (typeof AmazonCognitoIdentity === "undefined") {
+            alert("AmazonCognitoIdentity SDK not loaded!");
+        }
+
         const poolData = {
             UserPoolId: "us-east-1_E54lek6Y7",  // ✅ Your Cognito User Pool ID
             ClientId: "2l6mbk760ns0hgbs7lmpjclr4j"  // ✅ Your Cognito App Client ID
