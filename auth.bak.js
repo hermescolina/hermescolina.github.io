@@ -4,35 +4,6 @@ const poolData = {
 };
 const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
 
-function showSignUp() {
-    document.getElementById("signup-container").style.display = "block";
-    document.getElementById("login-container").style.display = "none";
-    document.getElementById("reset-container").style.display = "none";
-    document.getElementById("confirm-container").style.display = "none";
-}
-
-function showLogin() {
-    document.getElementById("signup-container").style.display = "none";
-    document.getElementById("login-container").style.display = "block";
-    document.getElementById("reset-container").style.display = "none";
-    document.getElementById("confirm-container").style.display = "none";
-}
-
-function showResetPassword() {
-    document.getElementById("signup-container").style.display = "none";
-    document.getElementById("login-container").style.display = "none";
-    document.getElementById("reset-container").style.display = "block";
-    document.getElementById("confirm-container").style.display = "none";
-}
-
-// Hide All Forms
-function hideAll() {
-    document.getElementById("signup-container").style.display = "none";
-    document.getElementById("login-container").style.display = "none";
-    document.getElementById("reset-container").style.display = "none";
-    document.getElementById("dashboard").style.display = "none";
-}
-
 function signUp() {
     const email = document.getElementById("signup-email").value;
     const password = document.getElementById("signup-password").value;
@@ -125,6 +96,6 @@ window.onload = function() {
     if (localStorage.getItem("userEmail")) {
         showDashboard();
     } else {
-        showLogin(); // Show the login form by default
+        document.getElementById("login-container").style.display = "block";
     }
 };
