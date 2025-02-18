@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login with AWS Cognito</title>
-
-    <!-- Amazon Cognito SDK -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.1196.0/aws-sdk.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/amazon-cognito-identity-js/6.3.1/amazon-cognito-identity.min.js"></script>
-
+    
+    <!-- Load AWS SDK first -->
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1196.0.min.js"></script>
+    
+    <!-- Load Cognito Identity SDK -->
+    <script src="https://unpkg.com/amazon-cognito-identity-js@6.3.1/dist/amazon-cognito-identity.min.js"></script>
+    
     <style>
         body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 50px; }
         input, button { display: block; margin: 10px auto; padding: 10px; width: 250px; }
@@ -16,9 +18,8 @@
     </style>
 </head>
 <body>
-
     <h1>Sign Up / Login with AWS Cognito</h1>
-
+    
     <h2>Sign Up</h2>
     <input type="email" id="signup-email" placeholder="Enter Email">
     <input type="password" id="signup-password" placeholder="Enter Password">
@@ -36,89 +37,68 @@
     <button onclick="signOut()">Logout</button>
 
     <script>
-        // Ensure the SDK is loaded
-        if (typeof AmazonCognitoIdentity === "undefined") {
-            alert("AmazonCognitoIdentity SDK not loaded!");
-        }
+        window.onload = function () {
+            if (typeof AmazonCognitoIdentity === "undefined") {
+                console.error("AmazonCognitoIdentity SDK failed to load!");
+                return;
+            }
+            console.log("AmazonCognitoIdentity SDK loaded successfully!");
 
-        const poolData = {
-            UserPoolId: "us-east-1_E54lek6Y7",  // ✅ Your Cognito User Pool ID
-            ClientId: "2l6mbk760ns0hgbs7lmpjclr4j"  // ✅ Your Cognito App Client ID
+            const poolData = {
+                UserPoolId: "us-east-1_E54lek6Y7",  // ✅ Your Cognito User Pool ID
+                ClientId: "2l6mbk760ns0hgbs7lmpjclr4j"  // ✅ Your Cognito App Client ID
+            };
+            
+            const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+            window.signUp = function () {
+                const email = document.getElementById("signup-email").value;
+                const password = document.getElementById("signup-password").value;
+                const attributeList = [new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "email", Value: email })];
+                
+                userPool.signUp(email, password, attributeList, null, (err, result) => {
+                    if (err) return alert(err.message);
+                    alert("Signup successful! Check your email for confirmation code.");
+                });
+            };
+
+            window.confirmSignUp = function () {
+                const email = document.getElementById("signup-email").value;
+                const code = document.getElementById("confirm-code").value;
+
+                const userData = { Username: email, Pool: userPool };
+                const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+                cognitoUser.confirmRegistration(code, true, (err, result) => {
+                    if (err) return alert(err.message);
+                    alert("Account confirmed! You can now log in.");
+                });
+            };
+
+            window.signIn = function () {
+                const email = document.getElementById("login-email").value;
+                const password = document.getElementById("login-password").value;
+
+                const authDetails = new AmazonCognitoIdentity.AuthenticationDetails({ Username: email, Password: password });
+                const userData = { Username: email, Pool: userPool };
+                const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+                cognitoUser.authenticateUser(authDetails, {
+                    onSuccess: (result) => {
+                        alert("Login successful! Token: " + result.getAccessToken().getJwtToken());
+                    },
+                    onFailure: (err) => alert(err.message)
+                });
+            };
+
+            window.signOut = function () {
+                const cognitoUser = userPool.getCurrentUser();
+                if (cognitoUser) {
+                    cognitoUser.signOut();
+                    alert("Logged out successfully!");
+                }
+            };
         };
-
-        const userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-        function signUp() {
-            const email = document.getElementById("signup-email").value;
-            const password = document.getElementById("signup-password").value;
-            if (!email || !password) {
-                alert("Please fill in all fields.");
-                return;
-            }
-
-            const attributeList = [new AmazonCognitoIdentity.CognitoUserAttribute({ Name: "email", Value: email })];
-
-            userPool.signUp(email, password, attributeList, null, (err, result) => {
-                if (err) {
-                    alert(err.message);
-                    return;
-                }
-                alert("Signup successful! Check your email for the confirmation code.");
-            });
-        }
-
-        function confirmSignUp() {
-            const email = document.getElementById("signup-email").value;
-            const code = document.getElementById("confirm-code").value;
-            if (!email || !code) {
-                alert("Please enter your email and confirmation code.");
-                return;
-            }
-
-            const userData = { Username: email, Pool: userPool };
-            const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-            cognitoUser.confirmRegistration(code, true, (err, result) => {
-                if (err) {
-                    alert(err.message);
-                    return;
-                }
-                alert("Account confirmed! You can now log in.");
-            });
-        }
-
-        function signIn() {
-            const email = document.getElementById("login-email").value;
-            const password = document.getElementById("login-password").value;
-            if (!email || !password) {
-                alert("Please enter email and password.");
-                return;
-            }
-
-            const authDetails = new AmazonCognitoIdentity.AuthenticationDetails({ Username: email, Password: password });
-            const userData = { Username: email, Pool: userPool };
-            const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-            cognitoUser.authenticateUser(authDetails, {
-                onSuccess: (result) => {
-                    alert("Login successful! Token: " + result.getAccessToken().getJwtToken());
-                },
-                onFailure: (err) => {
-                    alert(err.message);
-                }
-            });
-        }
-
-        function signOut() {
-            const cognitoUser = userPool.getCurrentUser();
-            if (cognitoUser) {
-                cognitoUser.signOut();
-                alert("Logged out successfully!");
-            } else {
-                alert("No user is currently logged in.");
-            }
-        }
     </script>
-
 </body>
 </html>
