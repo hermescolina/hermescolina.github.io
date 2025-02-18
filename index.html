@@ -33,8 +33,16 @@
     <input type="email" id="login-email" placeholder="Enter Email">
     <input type="password" id="login-password" placeholder="Enter Password">
     <button onclick="signIn()">Login</button>
-
     <button onclick="signOut()">Logout</button>
+
+    <h2>Forgot Password</h2>
+    <input type="email" id="forgot-email" placeholder="Enter Email">
+    <button onclick="forgotPassword()">Request Reset</button>
+
+    <h2>Reset Password</h2>
+    <input type="text" id="reset-code" placeholder="Enter Verification Code">
+    <input type="password" id="new-password" placeholder="Enter New Password">
+    <button onclick="confirmNewPassword()">Reset Password</button>
 
     <script>
         window.onload = function () {
@@ -97,6 +105,39 @@
                     cognitoUser.signOut();
                     alert("Logged out successfully!");
                 }
+            };
+
+            window.forgotPassword = function () {
+                const email = document.getElementById("forgot-email").value;
+                const userData = { Username: email, Pool: userPool };
+                const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+                
+                cognitoUser.forgotPassword({
+                    onSuccess: function () {
+                        alert("A verification code has been sent to your email.");
+                    },
+                    onFailure: function (err) {
+                        alert(err.message || JSON.stringify(err));
+                    }
+                });
+            };
+
+            window.confirmNewPassword = function () {
+                const email = document.getElementById("forgot-email").value;
+                const code = document.getElementById("reset-code").value;
+                const newPassword = document.getElementById("new-password").value;
+                
+                const userData = { Username: email, Pool: userPool };
+                const cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+                cognitoUser.confirmPassword(code, newPassword, {
+                    onSuccess: function () {
+                        alert("Password reset successful! You can now log in with your new password.");
+                    },
+                    onFailure: function (err) {
+                        alert(err.message || JSON.stringify(err));
+                    }
+                });
             };
         };
     </script>
