@@ -1,0 +1,22 @@
+const login = async () => {
+    const response = await fetch("https://cognito-idp.us-east-1.amazonaws.com/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-amz-json-1.1",
+            "X-Amz-Target": "AWSCognitoIdentityProviderService.InitiateAuth"
+        },
+        body: JSON.stringify({
+            AuthParameters: {
+                USERNAME: "itloboc@gmail.com",
+                PASSWORD: "Asdf1234!"
+            },
+            AuthFlow: "USER_PASSWORD_AUTH",
+            ClientId: "76ktoitqul8pbcgn6c69kgvn94"
+        })
+    });
+
+    const data = await response.json();
+    console.log(data);
+};
+
+login();
