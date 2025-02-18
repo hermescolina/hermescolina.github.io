@@ -101,6 +101,6 @@ window.onload = function() {
     if (localStorage.getItem("userEmail")) {
         showDashboard();
     } else {
-        document.getElementById("auth-container").style.display = "block";
+        document.getElementById("login-container").style.display = "block";
     }
 };

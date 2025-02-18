@@ -64,40 +64,6 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Auth Container */
-.auth-container {
-    width: 100%;
-}
-
-/* Dashboard Styling */
-.dashboard-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.dashboard-container button {
-    width: auto;
-}
-
-/* Link Text Style */
-.link-text {
-    color: #007BFF;
-    cursor: pointer;
-}
-
-.link-text:hover {
-    text-decoration: underline;
-}
-
-/* Error Styling */
-.error {
-    color: red;
-    font-size: 14px;
-}
-
 /* Emphasize Login Button */
 #login-button {
     background-color: #FF5722;
@@ -114,6 +80,15 @@ button:hover {
     font-size: 12px;
     padding: 8px;
     width: auto;
+}
+
+/* Dashboard Styling */
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 /* Conditional Visibility */
