@@ -23,11 +23,6 @@ body {
     margin-top: 20px;
 }
 
-/* Form Containers */
-.form-container {
-    display: none;
-}
-
 /* Heading Styles */
 h1 {
     color: #333;
@@ -67,7 +62,7 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Smaller Password Recovery Buttons */
+/* Smaller Password Recovery Button */
 #reset-container button {
     font-size: 12px;
     padding: 8px;
@@ -81,4 +76,9 @@ button:hover {
     align-items: center;
     justify-content: center;
     width: 100%;
+}
+
+/* Conditional Visibility */
+#dashboard {
+    display: none;
 }
