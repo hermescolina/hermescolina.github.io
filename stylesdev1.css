@@ -11,15 +11,6 @@ body {
     align-items: center;
 }
 
-/* Page Visibility */
-.page {
-    display: none;
-}
-
-.page.active {
-    display: block;
-}
-
 /* Container for Forms and Dashboard */
 .container {
     display: none;
@@ -76,7 +67,7 @@ button:hover {
     background-color: #0056b3;
 }
 
-/* Smaller Password Recovery Button */
+/* Smaller Password Recovery Buttons */
 #reset-container button {
     font-size: 12px;
     padding: 8px;

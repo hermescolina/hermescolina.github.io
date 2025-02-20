@@ -3,20 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AWS Cognito Auth</title>
+    <title>Your Travel App - Landing & Auth</title>
     <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1196.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/amazon-cognito-identity-js@6.3.1/dist/amazon-cognito-identity.min.js"></script>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="landing.css">
 </head>
 <body>
-    <!-- Auth Container -->
-    <div id="auth-container">
+    <!-- Landing Page -->
+    <div id="landing-page" class="page">
+        <header>
+            <nav class="navbar">
+                <div class="logo">
+                    <img src="logo.png" alt="Your App Logo" class="logo-img">
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search destinations or activities" class="search-input">
+                </div>
+                <div class="nav-right">
+                    <select class="currency">
+                        <option value="PHP">PHP</option>
+                        <option value="USD">USD</option>
+                    </select>
+                    <a href="#" class="nav-link">Go to app</a>
+                    <a href="#" class="nav-link">Help</a>
+                    <a href="#" class="nav-link">Recently viewed</a>
+                    <a href="#" class="nav-link button" id="show-signup">Sign up</a>
+                    <a href="#" class="nav-link button login" id="show-login">Login</a>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Your World of Joy</h1>
+                    <p>From local escapes to far-flung adventures, find what makes you happy anytime, anywhere</p>
+                    <div class="search-section">
+                        <input type="text" placeholder="Disneyland Tokyo" class="hero-search-input">
+                        <button class="search-button">Search</button>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <img src="hero-background.jpg" alt="Travel Adventure" class="hero-bg">
+                    <div class="shape green"></div>
+                    <div class="shape orange"></div>
+                </div>
+            </section>
+
+            <section class="categories">
+                <div class="category">Popular Regions</div>
+                <div class="category">Popular Destinations</div>
+                <div class="category">Popular Landmarks</div>
+                <div class="category">Explore Your App</div>
+                <div class="category gift-cards">Gift Cards</div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Auth Container (Hidden by default) -->
+    <div id="auth-container" class="page">
         <h1>AWS Cognito Auth</h1>
         <div id="navigation">
-            <button id="show-login">Login</button>
-            <button id="show-signup">Sign Up</button>
-            <button id="show-confirm">Confirm Sign Up</button>
-            <button id="show-reset">Reset Password</button>
+            <button id="back-to-landing">Back to Landing</button>
+            <button id="show-login-form">Login</button>
+            <button id="show-signup-form">Sign Up</button>
+            <button id="show-confirm-form">Confirm Sign Up</button>
+            <button id="show-reset-form">Reset Password</button>
         </div>
 
         <!-- Signup Form -->
@@ -54,7 +107,7 @@
         </div>
     </div>
 
-    <!-- Dashboard Container -->
+    <!-- Dashboard Container (Hidden by default) -->
     <div id="dashboard" class="container">
         <h1>Welcome to Your Dashboard</h1>
         <p id="user-info"></p>

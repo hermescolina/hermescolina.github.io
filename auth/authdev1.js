@@ -1,5 +1,5 @@
 import { poolData } from './config.js';
-import { showPage, showForm, showDashboard } from './ui.js';
+import { showForm, showDashboard } from './ui.js';
 
 // Helper function for email validation
 function isValidEmail(email) {
@@ -46,7 +46,7 @@ export async function signIn(email, password) {
     if (!isValidEmail(email)) return alert("Please enter a valid email.");
     if (!password) return alert("Please enter a password.");
 
-    const endpoint = "https://cognito-idp.us-east-1.amazonaws.com/";
+    const endpoint = "https://cognito-idp.us-east-1.amazonaws.com/"; // Fixed endpoint
     const requestOptions = {
         method: "POST",
         headers: {
@@ -59,7 +59,7 @@ export async function signIn(email, password) {
                 PASSWORD: password
             },
             AuthFlow: "USER_PASSWORD_AUTH",
-            ClientId: poolData.ClientId
+            ClientId: poolData.ClientId // Uses your ClientId: 76ktoitqul8pbcgn6c69kgvn94
         })
     };
 
@@ -124,5 +124,7 @@ export function confirmPasswordReset(email, code, newPassword) {
 
 export function signOut() {
     localStorage.removeItem("userEmail");
-    showPage("landing-page");
+    document.getElementById("dashboard").style.display = "none";
+    document.getElementById("auth-container").style.display = "block";
+    showForm("login-container");
 }
