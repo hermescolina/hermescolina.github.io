@@ -23,12 +23,12 @@ body {
 /* Container for Forms and Dashboard */
 .container {
     display: none;
-    max-width: 400px;
+    max-width: 90%; /* Adjusted for 1366px */
     width: 100%;
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 30px;
+    padding: 20px; /* Reduced padding for smaller screens */
     margin-top: 20px;
 }
 
@@ -40,22 +40,25 @@ body {
 /* Heading Styles */
 h1 {
     color: #333;
+    font-size: 1.5rem; /* Reduced for smaller screens */
 }
 
 h2 {
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced margin */
     color: #007BFF;
+    font-size: 1.2rem; /* Reduced for smaller screens */
 }
 
 /* Input and Button Styles */
 input,
 button {
     display: block;
-    margin: 10px auto;
-    padding: 10px;
-    width: 250px;
+    margin: 8px auto; /* Reduced margin */
+    padding: 8px; /* Reduced padding */
+    width: 80%; /* Adjusted for smaller screens */
     border: 1px solid #ddd;
     border-radius: 4px;
+    font-size: 14px; /* Reduced font size */
 }
 
 input:focus,
@@ -68,7 +71,7 @@ button {
     background-color: #007BFF;
     color: white;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px; /* Reduced font size */
     border: none;
 }
 
@@ -79,7 +82,7 @@ button:hover {
 /* Smaller Password Recovery Button */
 #reset-container button {
     font-size: 12px;
-    padding: 8px;
+    padding: 6px; /* Reduced padding */
     width: auto;
 }
 
@@ -90,4 +93,25 @@ button:hover {
     align-items: center;
     justify-content: center;
     width: 100%;
+}
+
+/* Responsive Adjustments for 1366x768 */
+@media screen and (max-width: 1366px) {
+    .container {
+        max-width: 90%;
+        padding: 15px;
+    }
+
+    input,
+    button {
+        width: 90%;
+    }
+
+    h1 {
+        font-size: 1.3rem;
+    }
+
+    h2 {
+        font-size: 1rem;
+    }
 }
