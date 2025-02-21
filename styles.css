@@ -24,7 +24,7 @@ body {
 /* Container for Forms and Dashboard */
 .container {
     display: none;
-    max-width: 90%; /* Adjusted for 1366px */
+    max-width: 100%; /* Adjusted for 1366px */
     width: 100%;
     background-color: white;
     border-radius: 8px;
