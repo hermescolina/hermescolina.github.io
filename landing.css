@@ -68,7 +68,8 @@
 /* Hero Section */
 .hero {
     display: flex;
-    flex-direction: column; /* Stack on smaller screens */
+    flex: 1;
+    /*flex-direction: column; /* Stack on smaller screens */
     justify-content: center;
     align-items: center;
     padding: 80px 3% 30px; /* Reduced padding */
