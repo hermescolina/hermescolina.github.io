@@ -162,7 +162,7 @@
 }
 
 /* Categories */
-..categories {
+.categories {
     display: flex;
     flex-wrap: nowrap; /* Keeps items in a single row */
     justify-content: flex-start; /* Aligns categories to the left */
