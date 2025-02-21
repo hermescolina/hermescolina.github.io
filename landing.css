@@ -162,22 +162,30 @@
 }
 
 /* Categories */
-.categories {
+..categories {
     display: flex;
-    flex-wrap: wrap; /* Allow wrapping on smaller screens */
-    justify-content: space-around;
-    padding: 1.5rem 3%; /* Reduced padding */
-    background-color: #fff;
-    border-top: 1px solid #ddd;
+    flex-wrap: nowrap; /* Keeps items in a single row */
+    justify-content: flex-start; /* Aligns categories to the left */
+    gap: 0rem; /* Adds spacing between items */
+    padding-top: 0.5rem;
+    padding-left: 0.5rem;
+    margin: 0;
+    background-color: #fa4;
+    /*width: 40%; /* Only take the space needed */
+    box-sizing: border-box;
 }
 
 .category {
-    padding: 0.8rem; /* Reduced padding */
+    flex: none; /* Prevents auto-stretching */
+    font-size: 14px;
     color: #333;
-    font-size: 14px; /* Reduced font size */
     cursor: pointer;
-    flex: 1 1 20%; /* Allow flexible sizing */
-    min-width: 100px; /* Minimum width for each category */
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+    white-space: nowrap; /* Prevents wrapping */
+    margin: 0; /* Ensures no external space */
+    padding: 0.5rem; /* Adds padding for better clickability */
 }
 
 .gift-cards {
